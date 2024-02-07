@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EntityScan("com.betrybe.Alexandria.models.entities")
-@EnableJpaRepositories("com.betrybe.alexandria.models.repositories")
-@ComponentScan("com.betrybe.alexandria")
+@EnableJpaRepositories("com.betrybe.Alexandria.models.repositories")
+@ComponentScan("com.betrybe.Alexandria")
 public class AlexandriaApplication {
 
   public static void main(String[] args) {
