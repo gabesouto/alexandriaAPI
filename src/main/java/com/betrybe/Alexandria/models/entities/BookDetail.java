@@ -1,10 +1,13 @@
 package com.betrybe.Alexandria.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,16 +22,27 @@ public class BookDetail {
   private Integer pageCount;
   private String year;
   private String isbn;
+  @OneToOne()
+  @JoinColumn(name = "book_id")
+  @JsonIgnore
+  private Book book;
 
   public BookDetail() {
   }
 
-  public BookDetail(Long id, String summary, Integer pageCount, String year, String isbn) {
+  public BookDetail(
+      Long id,
+      String summary,
+      Integer pageCount,
+      String year,
+      String isbn,
+      Book book) {
     this.id = id;
     this.summary = summary;
     this.pageCount = pageCount;
     this.year = year;
     this.isbn = isbn;
+    this.book = book;
   }
 
   public Long getId() {
@@ -69,5 +83,13 @@ public class BookDetail {
 
   public void setIsbn(String isbn) {
     this.isbn = isbn;
+  }
+
+  public Book getBook() {
+    return book;
+  }
+
+  public void setBook(Book book) {
+    this.book = book;
   }
 }
