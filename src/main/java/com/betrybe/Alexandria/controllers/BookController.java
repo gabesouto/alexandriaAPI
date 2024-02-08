@@ -10,6 +10,7 @@ import com.betrybe.Alexandria.services.BookService;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.spel.ast.NullLiteral;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,9 +37,9 @@ public class BookController {
   @PostMapping()
   public ResponseEntity<ResponseDTO<Book>> createBook(
       @RequestBody BookDTO bookDTO) {
-    Book newBookDetail = bookService.insertBook(bookDTO.toBook());
+    Book newBook = bookService.insertBook(bookDTO.toBook());
     ResponseDTO<Book> responseDTO = new ResponseDTO<>("Livro criado com sucesso!",
-        newBookDetail);
+        newBook);
     return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
   }
 
@@ -96,12 +97,22 @@ public class BookController {
 
   @PostMapping("/{bookId}/details")
   public ResponseEntity<ResponseDTO<BookDetail>> createBook(
-      @RequestBody BookDetailDTO bookDetailDTO) {
-    BookDetail newBookDetail = bookService.insertBookDetail(bookDetailDTO.toBookDetail());
-    ResponseDTO<BookDetail> responseDTO = new ResponseDTO<>("Livro criado com sucesso!",
+      @RequestBody BookDetailDTO bookDetailDTO,
+      @PathVariable Long bookId) {
+    Optional<BookDetail> optionalNewBookDetail = bookService.insertBookDetail(
+        bookId,
+        bookDetailDTO.toBookDetail());
+    if (optionalNewBookDetail.isEmpty()) {
+      ResponseDTO<BookDetail> responseDTO = new ResponseDTO<>(
+          ResponseMessage.NOT_FOUND.getMessage(),
+          null);
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDTO);
+    }
+    BookDetail newBookDetail = optionalNewBookDetail.get();
+    ResponseDTO<BookDetail> responseDTO = new ResponseDTO<>(
+        ResponseMessage.CREATED.getMessage(),
         newBookDetail);
     return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
-
   }
 
   @PutMapping("/{bookId}/details/{id}")
