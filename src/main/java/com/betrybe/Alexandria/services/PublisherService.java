@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class PublisherService {
 
   private PublisherRepository publisherRepository;
+  
 
   @Autowired
   public PublisherService(PublisherRepository publisherRepository) {
