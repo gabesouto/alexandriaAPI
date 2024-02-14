@@ -9,6 +9,7 @@ import com.betrybe.Alexandria.models.entities.BookDetail;
 import com.betrybe.Alexandria.services.BookService;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.spel.ast.NullLiteral;
 import org.springframework.http.HttpStatus;
@@ -202,4 +203,35 @@ public class BookController {
     return ResponseEntity.ok(responseDTO);
   }
 
+  @PutMapping("/{bookId}/author/{authorId}")
+  public ResponseEntity<ResponseDTO<Book>> setAuthor(
+      @PathVariable Long bookId,
+      @PathVariable Long authorId) {
+    Optional<Book> optionalBook = bookService.setAuthor(bookId, authorId);
+
+    if (optionalBook.isEmpty()) {
+      ResponseDTO<Book> responseDTO = new ResponseDTO<>(
+          ResponseMessage.NOT_FOUND.getMessage(), null);
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDTO);
+    }
+    ResponseDTO<Book> responseDTO = new ResponseDTO<>(
+        ResponseMessage.SUCCESS.getMessage(), optionalBook.get());
+    return ResponseEntity.ok(responseDTO);
+  }
+
+  @DeleteMapping("/{bookId}/author/{authorId}")
+  public ResponseEntity<ResponseDTO<Book>> removeAuthor(
+      @PathVariable Long bookId,
+      @PathVariable Long authorId) {
+    Optional<Book> optionalBook = bookService.removeAuthor(bookId, authorId);
+
+    if (optionalBook.isEmpty()) {
+      ResponseDTO<Book> responseDTO = new ResponseDTO<>(
+          ResponseMessage.NOT_FOUND.getMessage(), null);
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDTO);
+    }
+    ResponseDTO<Book> responseDTO = new ResponseDTO<>(
+        ResponseMessage.SUCCESS.getMessage(), optionalBook.get());
+    return ResponseEntity.ok(responseDTO);
+  }
 }
