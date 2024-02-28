@@ -74,6 +74,10 @@ A API disponibiliza os seguintes endpoints:
 ```sh
 cd alexandriaAPI
 ```
+### Suba o container do banco de dados
+```sh
+docker-compose up -d
+```
 ### Instale as dependências 
 ```sh
 mvn install
